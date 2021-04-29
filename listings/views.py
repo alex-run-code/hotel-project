@@ -13,16 +13,18 @@ class UnitList(ListAPIView):
     serializer_class = ListingSerializer
 
     def get_queryset(self):
-        check_in = '2021-04-25'
-        check_out = '2021-04-30'
+        check_in = self.request.GET['check_in']
+        check_out = self.request.GET['check_out']
+        max_price = self.request.GET['max_price']
 
         available_hotel_rooms = HotelRoom.objects\
             .exclude(blocked_day_hr__date__range=[check_in, check_out])\
-                .prefetch_related('hotel_room_type__hotel')
+            .filter(hotel_room_type__booking_info__price__lte=max_price)\
+            .prefetch_related('hotel_room_type__hotel')
 
         apts = Listing.objects\
             .exclude(blocked_day_listing__date__range=[check_in, check_out])\
-            .filter(listing_type='apartment')\
+            .filter(listing_type='apartment', booking_info__price__lte=max_price)\
             .annotate(price=Min('booking_info__price'))
 
         hotels = Listing.objects\

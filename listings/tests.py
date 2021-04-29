@@ -103,7 +103,6 @@ class BookingTestCase(APITestCase):
         Apartments are sorted by price, from the lowest price to
         the highest price
         """
-        print(Listing.objects.all())
         self.hotel_lux.delete()
         apartment2 = ListingFactory(title='apartment2', listing_type='apartment')
         bookinginfo_apt2 = BookingInfoFactory(listing=apartment2, price='260')
@@ -131,3 +130,4 @@ class BookingTestCase(APITestCase):
         response = self.client.get(reverse('units'), params)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data[0]['title'], self.hotel_lux.title)
+        self.assertEqual(len(response.data), 1)
