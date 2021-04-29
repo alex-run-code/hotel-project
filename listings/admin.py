@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Listing, HotelRoomType, HotelRoom, BookingInfo
+from .models import Listing, HotelRoomType, HotelRoom, BookingInfo, BlockedDay
 
 
 class HotelRoomTypeInline(admin.StackedInline):
@@ -33,9 +33,13 @@ class HotelRoomTypeAdmin(admin.ModelAdmin):
 
 @admin.register(HotelRoom)
 class HotelRoomAdmin(admin.ModelAdmin):
-    list_display = ('room_number',)
+    list_display = ('room_number', 'hotel_room_type')
 
 
 @admin.register(BookingInfo)
 class BookingInfoAdmin(admin.ModelAdmin):
     pass
+
+@admin.register(BlockedDay)
+class BlockedDayAdmin(admin.ModelAdmin):
+    list_display = ('date', 'listing', 'hotel_room')

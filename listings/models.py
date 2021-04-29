@@ -74,3 +74,20 @@ class BookingInfo(models.Model):
             obj = self.hotel_room_type
             
         return f'{obj} {self.price}'
+
+class BlockedDay(models.Model):
+    date = models.DateField()
+    listing = models.ForeignKey(
+        Listing,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='blocked_day_listing'
+    )
+    hotel_room = models.ForeignKey(
+        HotelRoom,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name='blocked_day_hr',
+    )
